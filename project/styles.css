@@ -145,7 +145,7 @@ html, body {
 
 /* SECONDARY — quiet, must read calmer than primary */
 .btn-secondary {
-  border: 0;
+  border: 1.5px solid rgba(138,210,172,0.65);
   background: var(--emerald-50);
   color: var(--emerald-700);
   border-radius: 12px;
@@ -186,6 +186,7 @@ html, body {
 
 /* ── keyframes ─────────────────────────────────────────────── */
 @keyframes shimmer { 0% { background-position: -140% 0; } 60% { background-position: 140% 0; } 100% { background-position: 140% 0; } }
+@keyframes drawerReveal { from { transform: translateY(-100%); } to { transform: translateY(0); } }
 @keyframes cardShine { 0% { transform: translateX(-120%) rotate(8deg); } 100% { transform: translateX(320%) rotate(8deg); } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes drawerDown { from { opacity: 0; transform: translateY(-14px); max-height: 0; } to { opacity: 1; transform: translateY(0); max-height: 320px; } }

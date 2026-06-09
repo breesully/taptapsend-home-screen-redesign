@@ -49,18 +49,17 @@ function CurrencyTag({ flag, code, selectable }) {
 }
 
 function AmountBox({ label, sym, value, onChange, tag }) {
+  const inputW = Math.min(10, Math.max(3, (value || '').toString().length)) + 'ch';
   return (
-    <div style={{ flex: 1, minWidth: 0, background: 'var(--card-bg)', border: '1.5px solid var(--line)', borderRadius: 13, padding: '11px 12px', transition: 'border-color .15s' }}
+    <div style={{ flex: 1, minWidth: 0, background: 'var(--card-bg)', border: '1.5px solid var(--line)', borderRadius: 13, padding: '16px 10px 20px', transition: 'border-color .15s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}
          onFocusCapture={(e) => e.currentTarget.style.borderColor = 'var(--emerald-400)'}
          onBlurCapture={(e) => e.currentTarget.style.borderColor = 'var(--line)'}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginBottom: 9 }}>
-        <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--ink-55)' }}>{label}</span>
-        {tag}
-      </div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 3 }}>
-        <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink-40)' }}>{sym}</span>
+      <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--ink-55)', textAlign: 'center' }}>{label}</span>
+      {tag}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 2, justifyContent: 'center' }}>
+        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink-40)', flexShrink: 0 }}>{sym}</span>
         <input inputMode="decimal" value={value} onChange={(e) => onChange(e.target.value.replace(/[^0-9.]/g, ''))} onFocus={(e) => e.target.select()}
-          className="tnum" style={{ width: '100%', border: 0, outline: 0, background: 'transparent', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: 25, letterSpacing: '-0.02em', color: 'var(--emerald-900)', padding: 0, minWidth: 0 }} />
+          className="tnum" style={{ width: inputW, border: 0, outline: 0, background: 'transparent', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: 26, letterSpacing: '-0.02em', color: 'var(--emerald-900)', padding: 0 }} />
       </div>
     </div>
   );
@@ -83,10 +82,12 @@ function SwapBtn() {
 // resume drawer tucked behind the send card
 function ResumeDrawer({ onContinue, onCancel }) {
   return (
-    <div style={{ position: 'relative', zIndex: 1, marginTop: -16, padding: '0 7px' }}>
-      <div className="anim-rise" style={{
-        background: 'var(--card-bg)', borderRadius: '0 0 16px 16px', border: '1px solid var(--line)', borderTop: 0,
-        boxShadow: 'inset 0 8px 14px -12px rgba(7,56,42,0.4), 0 12px 24px -16px rgba(7,56,42,0.3)',
+    <div style={{ position: 'relative', zIndex: 1, marginTop: -16 }}>
+      <div style={{
+        animation: 'drawerReveal 0.48s cubic-bezier(.2,.7,.2,1) both',
+        background: 'var(--emerald-50)', borderRadius: '0 0 16px 16px',
+        border: '1px solid rgba(138,210,172,0.55)', borderTop: 0,
+        boxShadow: '0 12px 24px -16px rgba(7,56,42,0.25)',
         padding: 'calc(var(--pad) + 6px) var(--pad) var(--pad)',
       }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.04em', color: 'var(--ink-55)', textTransform: 'uppercase', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -154,7 +155,7 @@ function SendMoney({ amount, setAmount, onSend, onSchedule, t }) {
         <div className="card" style={{ padding: 'var(--pad)', display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', zIndex: 2, boxShadow: 'var(--shadow-raise)' }}>
           {/* top line: context + badge */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-            <span style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--ink-55)' }}>Send to Pakistan</span>
+            <span style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--ink-55)' }}>Send money</span>
             <RateBadge show={t.showBadge} />
           </div>
 
