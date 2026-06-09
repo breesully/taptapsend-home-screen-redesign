@@ -113,7 +113,7 @@ html, body {
 /* type helpers */
 .serif { font-family: var(--serif); font-optical-sizing: auto; }
 .h-greeting { font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.04; letter-spacing: -0.015em; }
-.h-section  { font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.08; letter-spacing: -0.01em; color: var(--emerald-900); margin: 0; }
+.h-section  { font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.04; letter-spacing: -0.015em; color: var(--emerald-900); margin: 0; }
 .sub-section { font-size: 14.5px; font-weight: 500; color: var(--ink-55); margin: 3px 0 0; line-height: 1.35; }
 .label-sm   { font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: var(--ink-55); }
 .link-cta   { font-family: var(--sans); font-weight: 600; font-size: 15px; color: var(--emerald-600); background: none; border: 0; cursor: pointer; padding: 0; white-space: nowrap; }

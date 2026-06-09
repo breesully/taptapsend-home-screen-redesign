@@ -46,7 +46,7 @@ function HomeScreen({ amount, setAmount, t, nav, toast, onSchedule, onShare }) {
           <SendMoney amount={amount} setAmount={setAmount} onSend={() => nav('send')} onSchedule={onSchedule} t={t} />
         </div>
         {/* white from Your Wallet onward */}
-        <div style={{ background: 'var(--app-bg)', padding: '0 var(--pad)', display: 'flex', flexDirection: 'column', gap: 'var(--gap)', paddingBottom: 0 }}>
+        <div style={{ background: 'var(--app-bg)', padding: '0 var(--pad)', display: 'flex', flexDirection: 'column', gap: 48, paddingBottom: 0 }}>
           <WalletSection styleKey={t.cardStyle} onOpenWallet={() => nav('walletDetail', 'wallet')} onAction={(a) => toast(`${a} — coming up next`)} />
           <BillPay onManage={() => toast('Opening Bill Pay…')} onPay={(b) => toast(`Paying ${b.provider}…`)} onSeeAllPartners={() => toast('Browse all partners…')} />
           <Impact />
