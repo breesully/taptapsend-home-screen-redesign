@@ -50,15 +50,18 @@ function CurrencyTag({ flag, code, selectable }) {
 
 function AmountBox({ label, sym, value, onChange, tag }) {
   const inputW = Math.min(10, Math.max(3, (value || '').toString().length)) + 'ch';
+  const lineRef = useRefS(null);
   return (
     <div style={{ flex: 1, minWidth: 0, background: 'var(--card-bg)', border: '1.5px solid var(--line)', borderRadius: 13, padding: '16px 10px 20px', transition: 'border-color .15s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}
          onFocusCapture={(e) => e.currentTarget.style.borderColor = 'var(--emerald-400)'}
          onBlurCapture={(e) => e.currentTarget.style.borderColor = 'var(--line)'}>
       <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--ink-55)', textAlign: 'center' }}>{label}</span>
       {tag}
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 2, justifyContent: 'center' }}>
-        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink-40)', flexShrink: 0 }}>{sym}</span>
-        <input inputMode="decimal" value={value} onChange={(e) => onChange(e.target.value.replace(/[^0-9.]/g, ''))} onFocus={(e) => e.target.select()}
+      <div ref={lineRef} style={{ display: 'flex', alignItems: 'baseline', gap: 12, justifyContent: 'center', borderBottom: '1.5px solid var(--line)', paddingBottom: 5, transition: 'border-color .15s' }}>
+        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink-40)', flexShrink: 0, paddingBottom: 1 }}>{sym}</span>
+        <input inputMode="decimal" value={value} onChange={(e) => onChange(e.target.value.replace(/[^0-9.]/g, ''))}
+          onFocus={(e) => { e.target.select(); lineRef.current && (lineRef.current.style.borderBottomColor = 'var(--emerald-500)'); }}
+          onBlur={() => { lineRef.current && (lineRef.current.style.borderBottomColor = 'var(--line)'); }}
           className="tnum" style={{ width: inputW, border: 0, outline: 0, background: 'transparent', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: 26, letterSpacing: '-0.02em', color: 'var(--emerald-900)', padding: 0 }} />
       </div>
     </div>
@@ -152,7 +155,7 @@ function SendMoney({ amount, setAmount, onSend, onSchedule, t }) {
     <section style={{ display: 'flex', flexDirection: 'column', gap: 'var(--gap)', paddingTop: 18 }}>
       <div>
         {/* send card */}
-        <div className="card" style={{ padding: 'var(--pad)', display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', zIndex: 2, boxShadow: 'var(--shadow-raise)' }}>
+        <div className="card" style={{ padding: '38px var(--pad) var(--pad)', display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', zIndex: 2, boxShadow: 'var(--shadow-raise)' }}>
           {/* best rate badge — centered, straddling top edge */}
           <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%) translateY(-50%)', zIndex: 3 }}>
             <RateBadge show={t.showBadge} />
