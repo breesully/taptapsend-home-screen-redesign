@@ -1,0 +1,204 @@
+/* ───────────────────────── Taptap Send — Home redesign (v2) ─────────────────────────
+   Rich emerald system. White-on-white depth via shadow. Smaller radii, larger type.
+   Type: Newsreader (serif headers) + Hanken Grotesk (sans body/UI/all numbers).
+─────────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* emerald */
+  --emerald-950: #06281E;
+  --emerald-900: #07382A;   /* dark header band */
+  --emerald-800: #0C4634;
+  --emerald-700: #0F5A42;
+  --emerald-600: #13734F;
+  --emerald-500: #169B61;   /* brand */
+  --emerald-400: #38B97E;
+  --emerald-300: #8AD2AC;
+  --emerald-100: #E5F2EA;
+  --emerald-50:  #F2F8F4;
+
+  /* legacy aliases (keep references working) */
+  --green-900: var(--emerald-900);
+  --green-800: var(--emerald-800);
+  --green-700: var(--emerald-700);
+  --green-600: var(--emerald-600);
+  --green-500: var(--emerald-500);
+  --green-300: var(--emerald-300);
+  --green-100: var(--emerald-100);
+  --green-50:  var(--emerald-50);
+
+  --accent:      #169B61;  /* the one primary action color (tweakable) */
+  --accent-deep: #0F7049;
+
+  --gold:  #C79A3B;        /* premium accent for the rate badge */
+  --red:   #C9463B;        /* due / error */
+
+  --ink:    #14201B;
+  --ink-70: rgba(20,32,27,0.72);
+  --ink-55: rgba(20,32,27,0.55);
+  --ink-40: rgba(20,32,27,0.40);
+  --ink-25: rgba(20,32,27,0.22);
+  --line:   rgba(20,32,27,0.10);
+  --line-2: rgba(20,32,27,0.07);
+
+  --app-bg:  #FFFFFF;
+  --card-bg: #FFFFFF;
+  --surface: #F4F6F4;
+
+  --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --sans:  'Hanken Grotesk', -apple-system, system-ui, sans-serif;
+
+  /* density (tweakable) */
+  --pad: 20px;
+  --gap: 30px;            /* more separation between sections */
+  --radius: 16px;        /* reduced for a more sophisticated look */
+  --radius-sm: 12px;
+
+  /* depth */
+  --shadow-card: 0 1px 2px rgba(7,56,42,0.05), 0 10px 26px -10px rgba(7,56,42,0.18);
+  --shadow-raise: 0 2px 5px rgba(7,56,42,0.08), 0 22px 48px -16px rgba(7,56,42,0.28);
+  --shadow-drawer: 0 -10px 26px -10px rgba(7,56,42,0.16), 0 14px 30px -14px rgba(7,56,42,0.22);
+  --shadow-vcard: 0 14px 34px -10px rgba(6,40,30,0.45), 0 3px 8px rgba(6,40,30,0.22);
+  --shadow-pop:  0 2px 6px rgba(7,56,42,0.10), 0 20px 44px -12px rgba(7,56,42,0.30);
+}
+
+[data-density="dense"] {
+  --pad: 16px;
+  --gap: 22px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #d9ddd7;
+  font-family: var(--sans);
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.stage {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  background: radial-gradient(1200px 700px at 50% -10%, #eef1ec 0%, #dde1db 62%, #d4d8d1 100%);
+}
+
+/* ── App shell ──────────────────────────────── */
+.app-root {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: var(--app-bg);
+  overflow: hidden;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; }
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar { display: none; }
+
+/* type helpers */
+.serif { font-family: var(--serif); font-optical-sizing: auto; }
+.h-greeting { font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.04; letter-spacing: -0.015em; }
+.h-section  { font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.08; letter-spacing: -0.01em; color: var(--emerald-900); margin: 0; }
+.sub-section { font-size: 14.5px; font-weight: 500; color: var(--ink-55); margin: 3px 0 0; line-height: 1.35; }
+.label-sm   { font-size: 13px; font-weight: 600; letter-spacing: 0.01em; color: var(--ink-55); }
+.link-cta   { font-family: var(--sans); font-weight: 600; font-size: 15px; color: var(--emerald-600); background: none; border: 0; cursor: pointer; padding: 0; white-space: nowrap; }
+.tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* tap feedback */
+.pressable { transition: transform .12s ease, box-shadow .12s ease, background .12s ease, filter .12s ease; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+.pressable:active { transform: scale(0.975); }
+.inset:active { box-shadow: inset 0 2px 8px rgba(7,56,42,0.12); }
+
+/* PRIMARY — the single most important action; only accent-colored button */
+.btn-primary {
+  width: 100%;
+  height: 50px;
+  border: 0;
+  border-radius: 13px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16.5px;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px -7px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.btn-primary:active { transform: scale(0.985); filter: brightness(0.97); }
+
+/* SECONDARY — quiet, must read calmer than primary */
+.btn-secondary {
+  border: 0;
+  background: var(--emerald-50);
+  color: var(--emerald-700);
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-weight: 650;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  transition: background .12s ease, transform .12s ease;
+}
+.btn-secondary:active { background: var(--emerald-100); transform: scale(0.985); }
+
+/* TERTIARY — text-weight ghost */
+.btn-ghost {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--emerald-700);
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+}
+
+/* black "Add to Apple Wallet" style */
+.btn-apple {
+  border: 0; background: #000; color: #fff; border-radius: 12px;
+  font-family: var(--sans); font-weight: 650; font-size: 15.5px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
+}
+.btn-apple:active { transform: scale(0.985); }
+
+.card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow-card); }
+.hr { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+/* ── keyframes ─────────────────────────────────────────────── */
+@keyframes shimmer { 0% { background-position: -140% 0; } 60% { background-position: 140% 0; } 100% { background-position: 140% 0; } }
+@keyframes cardShine { 0% { transform: translateX(-120%) rotate(8deg); } 100% { transform: translateX(320%) rotate(8deg); } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes drawerDown { from { opacity: 0; transform: translateY(-14px); max-height: 0; } to { opacity: 1; transform: translateY(0); max-height: 320px; } }
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.9) translateY(8px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes checkPop { 0% { transform: scale(0); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes ringPulse { 0% { transform: scale(0.6); opacity: 0.5; } 100% { transform: scale(1.8); opacity: 0; } }
+@keyframes spinSwap { to { transform: rotate(360deg); } }
+
+.anim-rise { animation: rise .5s cubic-bezier(.2,.7,.2,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+}
