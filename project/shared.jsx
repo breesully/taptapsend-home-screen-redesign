@@ -89,19 +89,23 @@ function BottomSheet({ open, onClose, children }) {
 
 // ── Metallic emerald virtual card ───────────────────────────────
 function cardSurface(styleKey) {
+  const d = (bg, metal, extra = {}) => ({ bg, metal, dark: true, text: '#fff', sub: 'rgba(255,255,255,0.78)', faint: 'rgba(255,255,255,0.55)', chip: 'rgba(255,255,255,0.14)', shine: 'rgba(255,255,255,0.34)', ...extra });
+  const l = (bg, metal, text, extra = {}) => ({ bg, metal, dark: false, text, sub: text.replace(/[\d.]+\)$/, '0.65)'), faint: text.replace(/[\d.]+\)$/, '0.45)'), chip: text.replace(/[\d.]+\)$/, '0.10)'), shine: 'rgba(255,255,255,0.65)', ...extra });
   switch (styleKey) {
-    case 'graphite': return { bg: 'linear-gradient(150deg, #2b2f30 0%, #16191a 60%, #232728 100%)', metal: 'rgba(255,255,255,0.14)', dark: true };
-    case 'midnight': return { bg: 'linear-gradient(150deg, #123c52 0%, #0a2233 55%, #14465e 100%)', metal: 'rgba(255,255,255,0.13)', dark: true };
-    case 'gold':     return { bg: 'linear-gradient(150deg, #8a6d2f 0%, #5e4a1d 55%, #9a7a36 100%)', metal: 'rgba(255,255,255,0.20)', dark: true };
+    case 'graphite': return d('linear-gradient(150deg, #2b2f30 0%, #16191a 60%, #232728 100%)', 'rgba(255,255,255,0.14)');
+    case 'midnight': return d('linear-gradient(150deg, #123c52 0%, #0a2233 55%, #14465e 100%)', 'rgba(255,255,255,0.13)');
+    case 'gold':     return d('linear-gradient(150deg, #8a6d2f 0%, #5e4a1d 55%, #9a7a36 100%)', 'rgba(255,255,255,0.20)');
+    case 'peach':    return l('linear-gradient(150deg, #ffd5be 0%, #f5a882 38%, #e8916a 65%, #f7b89a 100%)', 'rgba(255,255,255,0.55)', 'rgba(90,35,15,0.88)');
+    case 'cream':    return l('linear-gradient(150deg, #fdf0e8 0%, #f2d8c4 38%, #e6c4a5 65%, #f5e2d4 100%)', 'rgba(255,255,255,0.60)', 'rgba(100,60,30,0.85)');
     case 'emerald':
-    default:         return { bg: 'linear-gradient(150deg, #1a8159 0%, #0c5238 42%, #0a3f2c 72%, #157049 100%)', metal: 'rgba(255,255,255,0.18)', dark: true };
+    default:         return d('linear-gradient(150deg, #1a8159 0%, #0c5238 42%, #0a3f2c 72%, #157049 100%)', 'rgba(255,255,255,0.18)');
   }
 }
 
 function VirtualCard({ wallet, styleKey = 'emerald', flipped = false, onFlip, shimmer = true }) {
   const s = cardSurface(styleKey);
-  const sub = 'rgba(255,255,255,0.78)';
-  const faint = 'rgba(255,255,255,0.55)';
+  const sub = s.sub;
+  const faint = s.faint;
   return (
     <div style={{ perspective: 1500, width: '100%' }}>
       <div className="pressable" onClick={onFlip} style={{
@@ -113,25 +117,25 @@ function VirtualCard({ wallet, styleKey = 'emerald', flipped = false, onFlip, sh
         <div style={{
           position: 'absolute', inset: 0, borderRadius: 16, padding: 'clamp(16px, 5.2%, 22px)',
           backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden',
-          background: s.bg, color: '#fff',
+          background: s.bg, color: s.text,
           display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
         }}>
           {/* metallic sheens */}
           <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(115deg, ${s.metal} 0%, transparent 26%, transparent 60%, ${s.metal} 100%)`, mixBlendMode: 'screen', pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', top: '-40%', left: '-10%', width: '60%', height: '180%', background: 'radial-gradient(closest-side, rgba(255,255,255,0.22), transparent)', pointerEvents: 'none' }} />
           {/* moving shine */}
-          {shimmer && <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '32%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent)', filter: 'blur(2px)', animation: 'cardShine 4.6s ease-in-out 1.2s infinite', pointerEvents: 'none' }} />}
+          {shimmer && <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '32%', background: `linear-gradient(90deg, transparent, ${s.shine}, transparent)`, filter: 'blur(2px)', animation: 'cardShine 4.6s ease-in-out 1.2s infinite', pointerEvents: 'none' }} />}
 
           <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <BrandMark size={34} fg="#fff" round={10} bg="rgba(255,255,255,0.13)" accent="#F2B84B" />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.14)', padding: '5px 10px 5px 6px', borderRadius: 999 }}>
+            <BrandMark size={34} fg={s.dark ? '#fff' : s.text} round={10} bg={s.chip} accent="#F2B84B" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: s.chip, padding: '5px 10px 5px 6px', borderRadius: 999 }}>
               {wallet.flag}
-              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.02em' }}>{wallet.code}</span>
+              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.02em', color: s.text }}>{wallet.code}</span>
             </div>
           </div>
 
           <div style={{ position: 'relative' }}>
-            <div className="tnum" style={{ fontSize: 'clamp(18px, 6.2%, 23px)', fontWeight: 600, letterSpacing: '0.12em', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div className="tnum" style={{ fontSize: 'clamp(18px, 6.2%, 23px)', fontWeight: 600, letterSpacing: '0.12em', display: 'flex', alignItems: 'center', gap: 10, color: s.text }}>
               <span>••••</span><span>••••</span><span>••••</span><span>{wallet.last4}</span>
             </div>
           </div>
@@ -139,27 +143,27 @@ function VirtualCard({ wallet, styleKey = 'emerald', flipped = false, onFlip, sh
           <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div>
               <div style={{ fontSize: 9.5, color: faint, fontWeight: 600, letterSpacing: '0.08em' }}>CARDHOLDER</div>
-              <div style={{ fontSize: 13.5, color: '#fff', fontWeight: 600, letterSpacing: '0.02em' }}>{wallet.holder}</div>
+              <div style={{ fontSize: 13.5, color: s.text, fontWeight: 600, letterSpacing: '0.02em' }}>{wallet.holder}</div>
             </div>
-            <span style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: 700, fontSize: 21, letterSpacing: '-0.02em' }}>VISA</span>
+            <span style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: 700, fontSize: 21, letterSpacing: '-0.02em', color: s.text }}>VISA</span>
           </div>
         </div>
 
         {/* back */}
         <div style={{
           position: 'absolute', inset: 0, borderRadius: 16, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
-          transform: 'rotateY(180deg)', background: s.bg, color: '#fff', overflow: 'hidden',
+          transform: 'rotateY(180deg)', background: s.bg, color: s.text, overflow: 'hidden',
           display: 'flex', flexDirection: 'column', paddingBottom: 16,
         }}>
-          <div style={{ height: '20%', background: 'rgba(0,0,0,0.32)', marginTop: '11%' }} />
+          <div style={{ height: '20%', background: s.dark ? 'rgba(0,0,0,0.32)' : 'rgba(0,0,0,0.14)', marginTop: '11%' }} />
           <div style={{ padding: '0 clamp(16px,5.2%,22px)', display: 'flex', flexDirection: 'column', gap: 11, flex: 1, justifyContent: 'center' }}>
             <div>
               <div style={{ fontSize: 10, color: faint, fontWeight: 600, letterSpacing: '0.05em' }}>CARD NUMBER</div>
-              <div className="tnum" style={{ fontSize: 17, fontWeight: 600, letterSpacing: '0.08em' }}>4929 11•• •••• {wallet.last4}</div>
+              <div className="tnum" style={{ fontSize: 17, fontWeight: 600, letterSpacing: '0.08em', color: s.text }}>4929 11•• •••• {wallet.last4}</div>
             </div>
             <div style={{ display: 'flex', gap: 30 }}>
-              <div><div style={{ fontSize: 10, color: faint, fontWeight: 600 }}>EXPIRES</div><div className="tnum" style={{ fontSize: 15, fontWeight: 600 }}>09/29</div></div>
-              <div><div style={{ fontSize: 10, color: faint, fontWeight: 600 }}>CVV</div><div className="tnum" style={{ fontSize: 15, fontWeight: 600 }}>•••</div></div>
+              <div><div style={{ fontSize: 10, color: faint, fontWeight: 600 }}>EXPIRES</div><div className="tnum" style={{ fontSize: 15, fontWeight: 600, color: s.text }}>09/29</div></div>
+              <div><div style={{ fontSize: 10, color: faint, fontWeight: 600 }}>CVV</div><div className="tnum" style={{ fontSize: 15, fontWeight: 600, color: s.text }}>•••</div></div>
             </div>
             <div style={{ fontSize: 11, color: faint }}>Tap to flip back</div>
           </div>

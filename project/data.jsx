@@ -3,9 +3,9 @@
 const RATE = 371.80; // £1 = PKR
 
 const WALLETS = [
-  { code: 'GBP', name: 'British Pound', last4: '4144', holder: 'Vaibhav Kaul', balance: 22.70, sym: '£', balanceHome: 22.70, flag: <FlagGB size={18} /> },
-  { code: 'INR', name: 'Indian Rupee', last4: '8821', holder: 'Vaibhav Kaul', balance: 13127.50, sym: '₹', balanceHome: 124.90, flag: <FlagIN size={18} /> },
-  { code: 'PKR', name: 'Pakistani Rupee', last4: '0317', holder: 'Vaibhav Kaul', balance: 6730.00, sym: 'Rs', balanceHome: 18.10, flag: <FlagPK size={18} /> },
+  { code: 'GBP', name: 'British Pound', last4: '4144', holder: 'Vaibhav Kaul', balance: 22.70, sym: '£', balanceHome: 22.70, flag: <FlagGB size={18} />, styleKey: 'emerald' },
+  { code: 'INR', name: 'Indian Rupee', last4: '8821', holder: 'Vaibhav Kaul', balance: 13127.50, sym: '₹', balanceHome: 124.90, flag: <FlagIN size={18} />, styleKey: 'peach' },
+  { code: 'PKR', name: 'Pakistani Rupee', last4: '0317', holder: 'Vaibhav Kaul', balance: 6730.00, sym: 'Rs', balanceHome: 18.10, flag: <FlagPK size={18} />, styleKey: 'cream' },
 ];
 const TOTAL_HOME = WALLETS.reduce((a, w) => a + w.balanceHome, 0); // in GBP
 

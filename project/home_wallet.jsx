@@ -16,11 +16,12 @@ function QuickAction({ icon, label, onClick }) {
 
 // peeking sliver of an adjacent card
 function CardPeek({ wallet, side }) {
-  const s = cardSurface('emerald');
+  const s = cardSurface(wallet.styleKey || 'emerald');
   return (
     <div aria-hidden style={{
-      position: 'absolute', top: '6%', bottom: '6%', width: '70%', borderRadius: 16, background: s.bg, overflow: 'hidden',
-      [side]: '-58%', filter: 'brightness(0.82)', boxShadow: '0 10px 24px -12px rgba(6,40,30,0.4)', zIndex: 0,
+      position: 'absolute', top: '5%', bottom: '5%', width: '82%', borderRadius: 16, background: s.bg, overflow: 'hidden',
+      [side]: '-66%', filter: 'brightness(0.88)', boxShadow: '0 10px 28px -8px rgba(6,40,30,0.45)', zIndex: 0,
+      transition: 'opacity .3s',
     }}>
       <div style={{ position: 'absolute', top: 14, [side === 'left' ? 'right' : 'left']: 14, opacity: 0.9 }}>{wallet.flag}</div>
     </div>
@@ -34,14 +35,22 @@ function WalletSection({ styleKey, onOpenWallet, onAction }) {
   const total = useCountUp(TOTAL_HOME, reveal, 1200);
   const w = WALLETS[idx];
 
-  const drag = useRefW({ x0: 0, active: false });
+  const drag = useRefW({ x0: 0, t0: 0, active: false, moved: false });
   const [dx, setDx] = useStateW(0);
-  const onDown = (e) => { drag.current = { x0: e.clientX, active: true, moved: false }; };
-  const onMove = (e) => { if (drag.current.active) { setDx(e.clientX - drag.current.x0); if (Math.abs(e.clientX - drag.current.x0) > 6) drag.current.moved = true; } };
+  const onDown = (e) => { drag.current = { x0: e.clientX, t0: Date.now(), active: true, moved: false }; };
+  const onMove = (e) => {
+    if (!drag.current.active) return;
+    const d = e.clientX - drag.current.x0;
+    setDx(d);
+    if (Math.abs(d) > 5) drag.current.moved = true;
+  };
   const onUp = () => {
     if (!drag.current.active) return;
-    if (dx < -44 && idx < WALLETS.length - 1) { setIdx(idx + 1); setFlipped(false); }
-    else if (dx > 44 && idx > 0) { setIdx(idx - 1); setFlipped(false); }
+    const elapsed = Math.max(1, Date.now() - drag.current.t0);
+    const vel = dx / elapsed; // px/ms
+    const snap = Math.abs(dx) > 38 || Math.abs(vel) > 0.28;
+    if (snap && (dx < 0 || vel < -0.28) && idx < WALLETS.length - 1) { setIdx(idx + 1); setFlipped(false); }
+    else if (snap && (dx > 0 || vel > 0.28) && idx > 0) { setIdx(idx - 1); setFlipped(false); }
     drag.current.active = false; setDx(0);
   };
 
@@ -66,27 +75,46 @@ function WalletSection({ styleKey, onOpenWallet, onAction }) {
         {idx > 0 && <CardPeek wallet={WALLETS[idx - 1]} side="left" />}
         {idx < WALLETS.length - 1 && <CardPeek wallet={WALLETS[idx + 1]} side="right" />}
         <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp}
-          style={{ position: 'relative', zIndex: 1, touchAction: 'pan-y', transform: `translateX(${dx * 0.35}px)`, transition: drag.current.active ? 'none' : 'transform .3s' }}>
-          <VirtualCard wallet={w} styleKey={styleKey} flipped={flipped}
+          style={{ position: 'relative', zIndex: 1, touchAction: 'pan-y', transform: `translateX(${dx * 0.32}px)`, transition: drag.current.active ? 'none' : 'transform .35s cubic-bezier(.2,.8,.2,1)' }}>
+          <VirtualCard wallet={w} styleKey={w.styleKey || styleKey} flipped={flipped}
             onFlip={() => { if (!drag.current.moved) setFlipped((f) => !f); }} />
         </div>
       </div>
 
-      {/* Add to Apple Wallet — Apple badge guidelines: black bg, silver border, stacked-card icon */}
+      {/* pagination dots */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 12 }}>
+        {WALLETS.map((_, i) => (
+          <div key={i} onClick={() => { setIdx(i); setFlipped(false); }} style={{
+            height: 6, borderRadius: 3, cursor: 'pointer',
+            width: i === idx ? 20 : 6,
+            background: i === idx ? 'var(--emerald-500)' : 'var(--ink-25)',
+            transition: 'width .3s cubic-bezier(.2,.8,.2,1), background .3s',
+          }} />
+        ))}
+      </div>
+
+      {/* Add to Apple Wallet — official Apple badge guidelines */}
       <button onClick={() => onAction('Add to Apple Wallet')} className="pressable" style={{
-        width: '100%', height: 54, marginTop: 16, border: '1.5px solid #c8c8c8', borderRadius: 10,
-        background: '#000', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 11,
+        width: '100%', height: 52, marginTop: 14, border: '1.5px solid #3a3a3c', borderRadius: 12,
+        background: '#000', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.28)',
       }}>
-        <svg width="36" height="36" viewBox="0 0 46 46" fill="none" style={{ display: 'block', flexShrink: 0 }}>
-          <rect x="8" y="5" width="30" height="20" rx="3.5" fill="#FF9F0A" transform="rotate(10 23 15)"/>
-          <rect x="8" y="4" width="30" height="20" rx="3.5" fill="#30D158" transform="rotate(5 23 14)"/>
-          <rect x="8" y="5" width="30" height="20" rx="3.5" fill="#FF453A" transform="rotate(0 23 15)"/>
-          <rect x="4" y="16" width="38" height="26" rx="5" fill="white"/>
-          <rect x="4" y="22" width="38" height="8" fill="#C7C7CC"/>
+        {/* Wallet icon — 3 fanned cards + white foreground card */}
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style={{ display: 'block', flexShrink: 0 }}>
+          {/* back card (orange/yellow) */}
+          <rect x="3" y="5" width="18" height="12" rx="2" fill="#FF9F0A" transform="rotate(-9 12 11)"/>
+          {/* middle card (green) */}
+          <rect x="3" y="5" width="18" height="12" rx="2" fill="#30D158" transform="rotate(-3 12 11)"/>
+          {/* front white card */}
+          <rect x="2" y="8" width="20" height="14" rx="2.5" fill="white"/>
+          {/* magnetic stripe */}
+          <rect x="2" y="13" width="20" height="4.5" fill="#C7C7CC"/>
+          {/* chip */}
+          <rect x="5" y="9.5" width="4" height="3" rx="0.8" fill="#FFD60A"/>
         </svg>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.2 }}>
-          <span style={{ fontFamily: '-apple-system, system-ui, sans-serif', fontSize: 11.5, color: 'rgba(255,255,255,0.82)', fontWeight: 400, letterSpacing: 0.1 }}>Add to</span>
-          <span style={{ fontFamily: '-apple-system, system-ui, sans-serif', fontSize: 19, color: '#fff', fontWeight: 600, letterSpacing: '-0.3px' }}>Apple Wallet</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.15 }}>
+          <span style={{ fontFamily: '-apple-system, BlinkMacSystemFont, system-ui, sans-serif', fontSize: 11, color: 'rgba(255,255,255,0.75)', fontWeight: 400, letterSpacing: '0.02em' }}>Add to</span>
+          <span style={{ fontFamily: '-apple-system, BlinkMacSystemFont, system-ui, sans-serif', fontSize: 18.5, color: '#fff', fontWeight: 600, letterSpacing: '-0.2px' }}>Apple Wallet</span>
         </div>
       </button>
 

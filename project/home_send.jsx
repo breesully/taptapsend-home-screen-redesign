@@ -5,7 +5,7 @@ const { useState: useStateS, useRef: useRefS } = React;
 function Header() {
   return (
     <div style={{ padding: '4px 0 2px' }}>
-      <h1 className="h-greeting" style={{ color: '#fff', margin: 0 }}>Welcome back, Vaibhav</h1>
+      <h1 className="h-greeting" style={{ color: '#fff', margin: 0 }}>Welcome back,<br />Vaibhav</h1>
       <p style={{ margin: '7px 0 0', fontSize: 15.5, lineHeight: 1.4, color: 'rgba(255,255,255,0.78)', fontWeight: 500, maxWidth: 300 }}>
         Send money home in minutes — always at a fair, transparent rate.
       </p>
@@ -149,13 +149,12 @@ function SendMoney({ amount, setAmount, onSend, onSchedule, t }) {
   const [suggest, setSuggest] = useStateS(true);
 
   return (
-    <section style={{ display: 'flex', flexDirection: 'column', gap: 'var(--gap)' }}>
+    <section style={{ display: 'flex', flexDirection: 'column', gap: 'var(--gap)', paddingTop: 18 }}>
       <div>
         {/* send card */}
         <div className="card" style={{ padding: 'var(--pad)', display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', zIndex: 2, boxShadow: 'var(--shadow-raise)' }}>
-          {/* top line: context + badge */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-            <span style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--ink-55)' }}>Send money</span>
+          {/* best rate badge — centered, straddling top edge */}
+          <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%) translateY(-50%)', zIndex: 3 }}>
             <RateBadge show={t.showBadge} />
           </div>
 
