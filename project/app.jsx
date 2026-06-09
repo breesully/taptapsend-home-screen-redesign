@@ -36,18 +36,18 @@ function HomeScreen({ amount, setAmount, t, nav, toast, onSchedule, onShare }) {
   return (
     <div className="screen">
       <div className="scroll" style={{ paddingBottom: 108, background: 'var(--app-bg)' }}>
-        {/* emerald hero that scrolls with content and fades to white right before Pay your bills */}
+        {/* emerald hero — fades to white before Your Wallet */}
         <div style={{
           paddingTop: STATUS_PAD, padding: `${STATUS_PAD}px var(--pad) var(--gap)`,
           display: 'flex', flexDirection: 'column', gap: 'var(--gap)',
-          background: 'linear-gradient(180deg, var(--emerald-900) 0%, var(--emerald-900) 26%, var(--emerald-800) 42%, color-mix(in srgb, var(--emerald-700) 62%, var(--app-bg)) 60%, color-mix(in srgb, var(--emerald-600) 22%, var(--app-bg)) 80%, var(--app-bg) 100%)',
+          background: 'linear-gradient(180deg, var(--emerald-900) 0%, var(--emerald-900) 30%, var(--emerald-800) 52%, color-mix(in srgb, var(--emerald-700) 50%, var(--app-bg)) 72%, color-mix(in srgb, var(--emerald-600) 15%, var(--app-bg)) 88%, var(--app-bg) 100%)',
         }}>
           <Header />
           <SendMoney amount={amount} setAmount={setAmount} onSend={() => nav('send')} onSchedule={onSchedule} t={t} />
-          <WalletSection styleKey={t.cardStyle} onOpenWallet={() => nav('walletDetail', 'wallet')} onAction={(a) => toast(`${a} — coming up next`)} />
         </div>
-        {/* white from Pay your bills onward */}
-        <div style={{ background: 'var(--app-bg)', padding: 'var(--gap) var(--pad) 0', display: 'flex', flexDirection: 'column', gap: 'var(--gap)' }}>
+        {/* white from Your Wallet onward */}
+        <div style={{ background: 'var(--app-bg)', padding: '0 var(--pad)', display: 'flex', flexDirection: 'column', gap: 'var(--gap)', paddingBottom: 0 }}>
+          <WalletSection styleKey={t.cardStyle} onOpenWallet={() => nav('walletDetail', 'wallet')} onAction={(a) => toast(`${a} — coming up next`)} />
           <BillPay onManage={() => toast('Opening Bill Pay…')} onPay={(b) => toast(`Paying ${b.provider}…`)} onSeeAllPartners={() => toast('Browse all partners…')} />
           <Impact />
           <Perks onShare={onShare} onCopy={() => toast('Code copied')} />
