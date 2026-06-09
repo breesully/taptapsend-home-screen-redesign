@@ -5,7 +5,7 @@ const { useState: useStateS, useRef: useRefS } = React;
 function Header() {
   return (
     <div style={{ padding: '4px 0 2px' }}>
-      <h1 className="h-greeting" style={{ color: '#fff', margin: 0 }}>Hi Vaibhav</h1>
+      <h1 className="h-greeting" style={{ color: '#fff', margin: 0 }}>Welcome back, Vaibhav</h1>
       <p style={{ margin: '7px 0 0', fontSize: 15.5, lineHeight: 1.4, color: 'rgba(255,255,255,0.78)', fontWeight: 500, maxWidth: 300 }}>
         Send money home in minutes — always at a fair, transparent rate.
       </p>
@@ -84,8 +84,8 @@ function ResumeDrawer({ onContinue, onCancel }) {
   return (
     <div style={{ position: 'relative', zIndex: 1, marginTop: -16 }}>
       <div style={{
-        animation: 'drawerReveal 0.48s cubic-bezier(.2,.7,.2,1) both',
-        background: 'var(--emerald-50)', borderRadius: '0 0 16px 16px',
+        animation: 'drawerReveal 0.8s cubic-bezier(.15,.85,.25,1) 1.2s both',
+        background: 'linear-gradient(180deg, #F3F8F4 0%, var(--card-bg) 100%)', borderRadius: '0 0 16px 16px',
         border: '1px solid rgba(138,210,172,0.55)', borderTop: 0,
         boxShadow: '0 12px 24px -16px rgba(7,56,42,0.25)',
         padding: 'calc(var(--pad) + 6px) var(--pad) var(--pad)',
@@ -170,12 +170,7 @@ function SendMoney({ amount, setAmount, onSend, onSchedule, t }) {
 
           {/* live rate */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, whiteSpace: 'nowrap' }}>
-            <span style={{ position: 'relative', width: 8, height: 8, flexShrink: 0 }}>
-              <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'var(--emerald-500)' }} />
-              <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'var(--emerald-500)', animation: 'ringPulse 2s ease-out infinite' }} />
-            </span>
             <span className="tnum" style={{ fontSize: 14.5, fontWeight: 600, color: 'var(--ink-70)' }}>£1.00 = PKR {fmt(RATE)}</span>
-            <span style={{ fontSize: 12.5, color: 'var(--ink-40)', fontWeight: 500, marginLeft: 2 }}>· live</span>
           </div>
 
           <button className="btn-primary pressable" onClick={onSend}>

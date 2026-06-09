@@ -72,18 +72,31 @@ function WalletSection({ styleKey, onOpenWallet, onAction }) {
         </div>
       </div>
 
+      {/* Add to Apple Wallet — Apple badge guidelines: black bg, silver border, stacked-card icon */}
+      <button onClick={() => onAction('Add to Apple Wallet')} className="pressable" style={{
+        width: '100%', height: 54, marginTop: 16, border: '1.5px solid #c8c8c8', borderRadius: 10,
+        background: '#000', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 11,
+      }}>
+        <svg width="36" height="36" viewBox="0 0 46 46" fill="none" style={{ display: 'block', flexShrink: 0 }}>
+          <rect x="8" y="5" width="30" height="20" rx="3.5" fill="#FF9F0A" transform="rotate(10 23 15)"/>
+          <rect x="8" y="4" width="30" height="20" rx="3.5" fill="#30D158" transform="rotate(5 23 14)"/>
+          <rect x="8" y="5" width="30" height="20" rx="3.5" fill="#FF453A" transform="rotate(0 23 15)"/>
+          <rect x="4" y="16" width="38" height="26" rx="5" fill="white"/>
+          <rect x="4" y="22" width="38" height="8" fill="#C7C7CC"/>
+        </svg>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.2 }}>
+          <span style={{ fontFamily: '-apple-system, system-ui, sans-serif', fontSize: 11.5, color: 'rgba(255,255,255,0.82)', fontWeight: 400, letterSpacing: 0.1 }}>Add to</span>
+          <span style={{ fontFamily: '-apple-system, system-ui, sans-serif', fontSize: 19, color: '#fff', fontWeight: 600, letterSpacing: '-0.3px' }}>Apple Wallet</span>
+        </div>
+      </button>
+
       {/* quick actions */}
-      <div style={{ display: 'flex', gap: 9, marginTop: 18 }}>
+      <div style={{ display: 'flex', gap: 9, marginTop: 14 }}>
         <QuickAction icon={<IconPlus size={20} sw={2} />} label="Add money" onClick={() => onAction('Add money')} />
         <QuickAction icon={<IconConvert size={20} sw={1.7} />} label="Convert" onClick={() => onAction('Convert')} />
         <QuickAction icon={<IconSend size={20} sw={1.8} />} label="Send" onClick={() => onAction('Send')} />
         <QuickAction icon={<IconRequest size={20} sw={1.8} />} label="Request" onClick={() => onAction('Request')} />
       </div>
-
-      {/* add to apple wallet */}
-      <button onClick={() => onAction('Add to Apple Wallet')} className="btn-apple pressable" style={{ width: '100%', height: 48, marginTop: 12 }}>
-        <IconApplePass size={20} sw={1.7} color="#fff" /> Add to Apple Wallet
-      </button>
     </section>
   );
 }
