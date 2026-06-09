@@ -56,7 +56,7 @@ function WalletSection({ styleKey, onOpenWallet, onAction }) {
 
   return (
     <section>
-      <SectionHead title="Your wallet" sub="One balance across every currency — ready to spend or send." action="Manage" onAction={onOpenWallet} pressableAction />
+      <SectionHead title="Wallet" sub="One balance across every currency — ready to spend or send." action="Manage" onAction={onOpenWallet} pressableAction />
 
       {/* balance row: card balance (prominent) + total available (quiet/grey) */}
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -222,7 +222,7 @@ function BillPay({ onManage, onPay, onSeeAllPartners }) {
 
   return (
     <section ref={rowRef}>
-      <SectionHead title="Pay your bills" sub="Settle bills back home in seconds — across every currency." action="Manage bills" onAction={onManage} />
+      <SectionHead title="Bill Pay" sub="Settle bills back home in seconds — across every currency." action="Manage bills" onAction={onManage} />
 
       <div className="card" style={{ padding: '4px var(--pad) 8px', marginBottom: 16 }}>
         {BILLS_UPCOMING.map((b, i) => (

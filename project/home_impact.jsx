@@ -45,7 +45,7 @@ function Impact() {
   const list = showAll ? RECIPIENTS : RECIPIENTS.slice(0, 3);
   return (
     <section>
-      <SectionHead title="Your impact" sub="Every transfer adds up to something that matters." />
+      <SectionHead title="Impact" sub="Every transfer adds up to something that matters." />
       <div className="card" style={{ padding: 'var(--pad)', display: 'flex', flexDirection: 'column', gap: 18, position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg, #F3F8F4 0%, var(--card-bg) 40%)' }}>
         <div>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--emerald-600)', marginBottom: 9 }}>
